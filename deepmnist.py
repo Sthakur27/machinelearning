@@ -19,8 +19,9 @@ from tensorflow.examples.tutorials.mnist import input_data
 import tensorflow as tf
 
 FLAGS = None
-###############################################################
 
+###############################################################
+#create neural network structure/graph
 def deepnn(x):
   """deepnn builds the graph for a deep net for classifying digits.
   Args:
@@ -73,7 +74,8 @@ def deepnn(x):
   y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
   return y_conv, keep_prob
 
-
+##################################################################
+#functions to help set up graph
 def conv2d(x, W):
   """conv2d returns a 2d convolution layer with full stride."""
   return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
@@ -95,8 +97,10 @@ def bias_variable(shape):
   """bias_variable generates a bias variable of a given shape."""
   initial = tf.constant(0.1, shape=shape)
   return tf.Variable(initial)
+####################################################################
 
 
+  #the main method to train the network
 def main(_):
   # Import data
   mnist = input_data.read_data_sets(FLAGS.data_dir, one_hot=True)
@@ -104,12 +108,13 @@ def main(_):
   # Create the model
   x = tf.placeholder(tf.float32, [None, 784])
 
-  # Define loss and optimizer
+  # Define correct labels for data
   y_ = tf.placeholder(tf.float32, [None, 10])
 
   # Build the graph for the deep net
   y_conv, keep_prob = deepnn(x)
 
+# Define loss function and optimizer
   cross_entropy = tf.reduce_mean(
       tf.nn.softmax_cross_entropy_with_logits(labels=y_, logits=y_conv))
   train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
@@ -144,6 +149,8 @@ def main(_):
     saver.save(sess, '%s/deepmnistmodel'%dir_path,
                      global_step=i)
     print('final save')
+    
+#runs the file
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('--data_dir', type=str,
