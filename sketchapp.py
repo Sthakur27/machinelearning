@@ -1,8 +1,8 @@
 from PyQt5.QtCore import QDir, QPoint, QRect, QSize, Qt
 from PyQt5.QtGui import QImage, QImageWriter, QPainter, QPen, qRgb, QColor
 from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog,
-        QInputDialog, QMainWindow, QMenu, QMessageBox, QWidget,QLineEdit)
-from loadtrainednetwork import mypredict
+        QInputDialog, QMainWindow, QMenu, QMessageBox, QWidget)
+from loadtrainednetwork import mypredict #@UnresolvedImport
 import numpy as np
 class ScribbleArea(QWidget):
     def __init__(self, parent=None):

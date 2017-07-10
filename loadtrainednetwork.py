@@ -4,8 +4,9 @@ from keras.datasets import mnist
 from keras import backend as K
 from keras.models import load_model
 import numpy as np
+mymodel=load_model('conv_classifier2.h5')
 def mypredict(x):
-    mymodel=load_model('conv_classifier.h5')
+    #mymodel=load_model('conv_classifier2.h5')
     #return(1)
     arr=mymodel.predict(x,batch_size=1,verbose=1)[0]
     maxVal=0
