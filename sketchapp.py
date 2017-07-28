@@ -49,12 +49,6 @@ class ScribbleArea(QWidget):
     
     def dispPredict(self):
         QMessageBox.about(self, "Prediction", self.compressImageWithoutDebug() )
-        '''msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        msg.setText("test")
-        msg.setInformativeText("This is additional information")
-        msg.setWindowTitle("MessageBox demo")
-        #QMessageBox.information(self, 'test', displayval, Union)'''
     
     def compressImage(self,debug):
         compressed_img=[]
@@ -73,6 +67,46 @@ class ScribbleArea(QWidget):
                 height_col.append(section_val)
             compressed_img.append(height_col)
         
+        
+        '''
+        #find smallest gap for autoresize
+        left_shortest_gap=28
+        #left side
+        for column in range(0,28):
+            for row in range(0,28):
+                if compressed_img[row][column]!=[0] and left_shortest_gap==28:
+                    left_shortest_gap=column
+        
+        right_shortest_gap=28
+        #left side
+        for column in range(27,-1,-1):
+            for row in range(0,28):
+                if compressed_img[row][column]!=[0] and right_shortest_gap==28:
+                    right_shortest_gap=28-column
+           
+        top_shortest_gap=28
+        #left side
+        for row in range(0,28):
+            for column in range(0,28):
+                if compressed_img[column][row]!=[0] and top_shortest_gap==28:
+                    top_shortest_gap=column
+         
+        bot_shortest_gap=28
+        #left side
+        for row in range(27,-1,-1):
+            for column in range(27,-1,-1):
+                if compressed_img[column][row]!=[0] and bot_shortest_gap==28:
+                    bot_shortest_gap=28-column
+                                
+        print("Left gap: ",left_shortest_gap)
+        print("Right gap: ",right_shortest_gap)
+        print("Top gap: ",top_shortest_gap)
+        print("Bottom gap: ",bot_shortest_gap)
+        shortest_gap=min([left_shortest_gap,right_shortest_gap,top_shortest_gap,bot_shortest_gap])-1            
+        #print(shortest_gap)  
+        #resize
+         '''     
+        
         if(debug):
             #visual format
             for y in reversed(range(0,len(compressed_img[0]))):
@@ -87,9 +121,13 @@ class ScribbleArea(QWidget):
             
             #check that it formatted correctly by validating corners
             print("--Validate Corners--")
+            #bottomleft
             print("(0,0)=%s"%compressed_img[0][0])
+            #bottom right
             print("(27,0)=%s"%compressed_img[27][0])
+            #topleft
             print("(0,27)=%s"%compressed_img[0][27])
+            #topright
             print("(27,27)=%s"%compressed_img[27][27])
         wrapper=(compressed_img,)
         formatted_data=np.array(wrapper)
@@ -99,6 +137,10 @@ class ScribbleArea(QWidget):
             print("--Result--")
             print("Prediction: %s"%prediction)
         self.displayval=str(prediction)
+        
+        
+        
+        
         return(str(prediction))
     @staticmethod
     def avgmulti(arr):
@@ -260,8 +302,9 @@ class MainWindow(QMainWindow):
             self.saveAsMenu.addAction(action)
 
         fileMenu = QMenu("&File", self)
-        fileMenu.addAction(self.openAct)
-        fileMenu.addMenu(self.saveAsMenu)
+        fileMenu.addAction(self.showPredict)
+        #fileMenu.addAction(self.openAct)
+        #fileMenu.addMenu(self.saveAsMenu)
         fileMenu.addSeparator()
         fileMenu.addAction(self.exitAct)
 
